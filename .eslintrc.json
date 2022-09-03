@@ -1,0 +1,10 @@
+{
+  "parserOptions": {
+    "project": "./tsconfig.json"
+  },
+  "extends": ["next/core-web-vitals", "@asdougl"],
+  "rules": {
+    "react/jsx-props-no-spreading": 0
+  },
+  "ignorePatterns": ["tailwind.config.cjs"]
+}
