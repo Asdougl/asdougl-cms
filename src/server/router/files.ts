@@ -6,8 +6,8 @@ import { createProtectedRouter } from './protected-router'
 
 aws.config.update({
   credentials: {
-    accessKeyId: env.AWS_ACCESS_KEY_ID,
-    secretAccessKey: env.AWS_SECRET_ACCESS_KEY,
+    accessKeyId: env.NEXT_AWS_ACCESS_KEY_ID,
+    secretAccessKey: env.NEXT_AWS_SECRET_ACCESS_KEY,
   },
   region: 'ap-southeast-2',
 })
