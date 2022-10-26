@@ -8,5 +8,6 @@ export const useMount = (callback: EffectCallback) => {
       mounted.current = true
       return callback()
     }
+    // eslint-disable-next-line
   }, [])
 }

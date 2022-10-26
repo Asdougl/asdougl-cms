@@ -25,7 +25,6 @@ export const Toggle = forwardRef<HTMLInputElement, ToggleProps>(function Toggle(
 ) {
   const [checked, setChecked] = useState(props.value === 'true')
   const id = useId()
-  console.log(checked, props.value)
   return (
     <div className={classNames('flex flex-row py-4', containerClassName)}>
       <div className="flex items-center">

@@ -37,7 +37,6 @@ export const AuthorEditor = ({
     register,
     handleSubmit,
     formState: { errors },
-    getValues,
   } = useForm<AuthorData>({
     resolver: zodResolver(AuthorData),
     defaultValues: author,

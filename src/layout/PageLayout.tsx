@@ -2,19 +2,14 @@ import type { IconDefinition } from '@fortawesome/pro-regular-svg-icons'
 import {
   faUserCircle,
   faCog,
-  faHouse,
   faNewspaper,
 } from '@fortawesome/pro-regular-svg-icons'
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import classNames from 'classnames'
 import isArray from 'lodash/isArray'
-import { useSession } from 'next-auth/react'
 import Head from 'next/head'
-import Link from 'next/link'
 import type { FC, ReactNode } from 'react'
-import { Fragment } from 'react'
-import { Logo } from '../components/Logo'
 import { NavLink } from '../components/NavLink'
 
 interface PageLayoutProps {
@@ -31,7 +26,7 @@ const NavbarLink: FC<{
   label: string
   to: string
   exact?: boolean
-}> = ({ to, icon, label, exact }) => {
+}> = ({ to, icon, exact }) => {
   return (
     <div className="flex items-center justify-center py-4">
       <NavLink
@@ -52,16 +47,7 @@ const NavbarLink: FC<{
   )
 }
 
-export const PageLayout = ({
-  children,
-  className,
-  title,
-  noContainer,
-  unauthenticated,
-  actions,
-}: PageLayoutProps) => {
-  const { data: sessionData } = useSession({ required: !unauthenticated })
-
+export const PageLayout = ({ children, className, title }: PageLayoutProps) => {
   const headTitle = title
     ? `${isArray(title) ? title[title.length - 1] : title} | Asdougl CMS`
     : 'Asdougl CMS'
