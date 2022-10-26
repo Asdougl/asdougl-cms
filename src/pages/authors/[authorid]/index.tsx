@@ -1,31 +1,47 @@
 import type { NextPage } from 'next'
-import isArray from 'lodash/isArray'
 import { useRouter } from 'next/router'
-import Link from 'next/link'
+import isArray from 'lodash/isArray'
 import { PageLayout } from '../../../layout/PageLayout'
 import { trpc } from '../../../utils/trpc'
-import { FullLoader } from '../../../components/Loader'
+import { Loader } from '../../../components/Loader'
+import { AuthorEditor } from '../../../features/authorEditor/AuthorEditor'
 
-const ViewAuthor: NextPage = () => {
+const EditAuthor: NextPage = () => {
+  const utils = trpc.useContext()
   const {
     query: { authorid },
+    push,
   } = useRouter()
   const parsedAuthorId = (isArray(authorid) ? authorid[0] : authorid) || ''
   const { data, status, error } = trpc.useQuery([
     'author.getAuthorWithPosts',
     parsedAuthorId,
   ])
+  const { mutate, isLoading } = trpc.useMutation(['author.updateAuthor'], {
+    onSuccess: (data) => {
+      utils.invalidateQueries(['author.getAuthorWithPosts', data.id])
+      utils.invalidateQueries(['author.getAuthorUsernames'])
+      utils.invalidateQueries(['author.getAuthors'])
+      push(`/authors`)
+    },
+  })
 
   return (
-    <PageLayout title={['Authors', 'View']}>
+    <PageLayout
+      title={data ? ['Authors', data.username] : ['Authors', 'Create']}
+    >
       {status === 'loading' ? (
-        <FullLoader />
+        <Loader />
       ) : status === 'success' ? (
         <div>
           {data ? (
-            <Link href={`/authors/${data.id}/edit`}>edit</Link>
+            <AuthorEditor
+              author={data}
+              onSuccess={(edited) => mutate({ ...edited, id: parsedAuthorId })}
+              loading={isLoading}
+            />
           ) : (
-            'unknown author'
+            <div>Post not found!</div>
           )}
         </div>
       ) : (
@@ -35,4 +51,4 @@ const ViewAuthor: NextPage = () => {
   )
 }
 
-export default ViewAuthor
+export default EditAuthor

@@ -11,7 +11,7 @@ interface BaseButtonProps {
 type ButtonProps = ButtonHTMLAttributes<HTMLButtonElement> & BaseButtonProps
 
 const ButtonBaseStyles =
-  'border-2 rounded-lg px-6 py-2 shadow-sm ring-violet-400/20 hover:bg-opacity-50 focus:outline-none focus:ring'
+  'rounded-2xl px-6 py-2 uppercase tracking-wide font-display hover:bg-opacity-60 w-full lg:w-auto'
 
 export const Button = ({
   className,
@@ -22,7 +22,7 @@ export const Button = ({
     <button
       {...props}
       className={classNames(
-        'rounded-lg border-2 px-6 py-2 shadow-sm ring-violet-400/20 focus:outline-none focus:ring',
+        ButtonBaseStyles,
         getActionStyle(category),
         className
       )}

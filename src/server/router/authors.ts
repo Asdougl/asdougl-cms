@@ -3,8 +3,25 @@ import { createProtectedRouter } from './protected-router'
 
 export const authorsRouter = createProtectedRouter()
   .query('getAuthors', {
-    async resolve({ ctx }) {
-      return await ctx.prisma.author.findMany()
+    input: z
+      .object({
+        search: z.string().optional(),
+        page: z.number().optional(),
+      })
+      .optional(),
+    async resolve({ ctx, input }) {
+      const PAGE_SIZE = 10
+      return await ctx.prisma.author.findMany({
+        where: input?.search
+          ? {
+              name: {
+                contains: input.search,
+              },
+            }
+          : undefined,
+        skip: input?.page ? input.page * PAGE_SIZE : undefined,
+        take: PAGE_SIZE,
+      })
     },
   })
   .query('getAuthorWithPosts', {

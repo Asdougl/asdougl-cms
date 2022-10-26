@@ -2,7 +2,7 @@ import type { NextPage } from 'next'
 import { useRouter } from 'next/router'
 import { PageLayout } from '../../layout/PageLayout'
 import { trpc } from '../../utils/trpc'
-import { PostEditor } from '../../features/postEditor/PostEditor'
+import { PostEditor } from '../../features/posts/PostEditor'
 
 const Posts: NextPage = () => {
   const router = useRouter()

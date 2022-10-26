@@ -1,28 +1,30 @@
-import { faPlus } from '@fortawesome/pro-regular-svg-icons'
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faUserCircle } from '@fortawesome/pro-regular-svg-icons'
 import type { NextPage } from 'next'
-import Link from 'next/link'
-import { AnchorButton } from '../../components/Button'
+import { useState } from 'react'
 import { AuthorCard } from '../../components/cards/AuthorCard'
 import { FullLoader } from '../../components/Loader'
+import { PageSearch } from '../../components/PageSearch'
 import { PageLayout } from '../../layout/PageLayout'
 import { trpc } from '../../utils/trpc'
 
 const Authors: NextPage = () => {
-  const { data, status, error } = trpc.useQuery(['author.getAuthors'])
+  const [search, setSearch] = useState<string>()
+  const { data, status, error } = trpc.useQuery([
+    'author.getAuthors',
+    { search },
+  ])
 
   return (
     <PageLayout title="Authors">
+      <PageSearch
+        onSearch={setSearch}
+        createRoute="/authors/create"
+        ctxIcon={faUserCircle}
+      />
       {status === 'loading' ? (
         <FullLoader />
       ) : status === 'success' ? (
-        <div className="flex flex-col items-start gap-2">
-          <Link href="/authors/create">
-            <AnchorButton>
-              <FontAwesomeIcon icon={faPlus} />
-              <span className="pl-2">Create Post</span>
-            </AnchorButton>
-          </Link>
+        <div className="flex flex-col items-start gap-6 pt-4">
           {data.map((author) => (
             <AuthorCard key={author.id} author={author} />
           ))}

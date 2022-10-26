@@ -14,7 +14,7 @@ aws.config.update({
 
 const fileType = z.enum(['jpg', 'jpeg', 'png', 'gif'])
 
-export const router = createProtectedRouter()
+export const filesRouter = createProtectedRouter()
   .query('getImages', {
     input: z.object({
       postId: z.string(),
@@ -25,7 +25,7 @@ export const router = createProtectedRouter()
       })
     },
   })
-  .mutation('getPostImgUploadUrl', {
+  .mutation('createPostImgUploadUrl', {
     input: z.object({
       postId: z.string(),
       alttext: z.string(),
@@ -56,7 +56,7 @@ export const router = createProtectedRouter()
       }
     },
   })
-  .mutation('getAuthorImgUploadUrl', {
+  .mutation('createAuthorImgUploadUrl', {
     input: z.object({
       authorId: z.string(),
       filetype: fileType,

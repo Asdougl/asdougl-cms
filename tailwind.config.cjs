@@ -6,7 +6,11 @@ module.exports = {
   theme: {
     extend: {
       colors: {
-        primary: colors.violet,
+        background: '#181f2c',
+        accent: colors.slate['800'],
+        "accent-hover": colors.slate['700'],
+        primary: colors.blue,
+        secondary: colors.violet,
         error: colors.rose,
         success: colors.emerald,
         standard: colors.slate,

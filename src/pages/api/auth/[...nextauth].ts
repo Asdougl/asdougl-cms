@@ -15,6 +15,11 @@ export const authOptions: NextAuthOptions = {
       }
       return session
     },
+    signIn({ user }) {
+      return (
+        !!user.email && env.NEXTAUTH_WHITELIST.split(' ').includes(user.email)
+      )
+    },
   },
   // Configure one or more authentication providers
   adapter: PrismaAdapter(prisma),

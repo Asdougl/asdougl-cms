@@ -17,16 +17,15 @@ export const Textarea = forwardRef<HTMLTextAreaElement, TextareaProps>(
     const id = useId()
     return (
       <div className="flex flex-col py-4">
-        <label htmlFor={id} className="px-2 pb-2 text-sm tracking-wider">
+        <label htmlFor={id} className="pb-2 text-sm opacity-70">
           {label} {isRequired && <span className="text-red-600">*</span>}
         </label>
         <textarea
           {...props}
           ref={ref}
           id={id}
-          rows={32}
           className={classNames(
-            'rounded-lg border-2 bg-transparent px-4 py-2 shadow-sm ring-primary-400/20 hover:ring focus:outline-none focus:ring disabled:bg-standard-100 disabled:hover:ring-0 dark:disabled:bg-standard-700',
+            'resize-none rounded-2xl bg-primary-400/10 px-4 py-2 shadow-sm ring-primary-400/20 hover:ring focus:outline-none focus:ring disabled:bg-standard-100 disabled:hover:ring-0 dark:disabled:bg-standard-700',
             error
               ? 'border-red-200'
               : 'border-standard-200 focus:border-primary-400 dark:border-standard-600',

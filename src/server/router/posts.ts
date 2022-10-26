@@ -5,11 +5,30 @@ import { createProtectedRouter } from './protected-router'
 
 export const postsRouter = createProtectedRouter()
   .query('getAllPosts', {
-    async resolve({ ctx }) {
+    input: z
+      .object({
+        search: z.string().optional(),
+        page: z.number().optional(),
+      })
+      .optional(),
+    async resolve({ ctx, input }) {
+      const PAGE_SIZE = 10
       return ctx.prisma.post.findMany({
         include: {
           author: { select: { id: true, name: true, image: true } },
         },
+        where: input?.search
+          ? {
+              title: {
+                contains: input.search,
+              },
+            }
+          : undefined,
+        orderBy: {
+          updatedAt: 'desc',
+        },
+        skip: input?.page ? input.page * PAGE_SIZE : undefined,
+        take: PAGE_SIZE,
       })
     },
   })
@@ -20,10 +39,6 @@ export const postsRouter = createProtectedRouter()
         where: { id: input },
         include: {
           author: { select: { id: true, name: true, image: true } },
-          images: {
-            where: { verified: true },
-            select: { id: true, filename: true, alttext: true },
-          },
         },
       })
     },
@@ -57,7 +72,8 @@ export const postsRouter = createProtectedRouter()
       title: z.string(),
       slug: z.string(),
       content: z.string().optional(),
-      authorId: z.string().optional(),
+      summary: z.string(),
+      authorId: z.string().nullish(),
       status: z.nativeEnum(PostStatus).optional(),
     }),
     async resolve({ ctx, input }) {
@@ -66,6 +82,7 @@ export const postsRouter = createProtectedRouter()
           title: input.title,
           slug: input.slug,
           content: input.content || '',
+          summary: input.summary,
           author: input.authorId
             ? {
                 connect: {

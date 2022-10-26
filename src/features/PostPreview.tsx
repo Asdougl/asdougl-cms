@@ -13,6 +13,7 @@ import { AnchorButton, Button } from '../components/Button'
 import { MiniLoader } from '../components/Loader'
 import { Markdown } from '../components/Markdown'
 import { DATE_TIME_FORMAT } from '../utils/constants'
+import { timeSince } from '../utils/helpers'
 import type { inferQueryOutput } from '../utils/trpc'
 import { trpc } from '../utils/trpc'
 
@@ -33,6 +34,10 @@ export const PostPreview = ({ post }: PostPreviewProps) => {
   const updateFlag =
     published && dayjs(post.updatedAt).isAfter(dayjs(post.publishedAt), 'hour')
 
+  const createdAt = dayjs(post.createdAt)
+  const updatedAt = dayjs(post.updatedAt)
+  const publishedAt = dayjs(post.publishedAt)
+
   return (
     <div className="flex flex-col pt-6">
       <div className="container mx-auto">
@@ -51,8 +56,9 @@ export const PostPreview = ({ post }: PostPreviewProps) => {
             <div className="text-sm opacity-70">
               <FontAwesomeIcon icon={faCalendarCirclePlus} fixedWidth /> Created
             </div>
-            <div className="text-lg">
-              {dayjs(post.createdAt).format(DATE_TIME_FORMAT)}
+            <div className="text-lg">{createdAt.format(DATE_TIME_FORMAT)}</div>
+            <div className="text-sm opacity-70">
+              {timeSince(createdAt.toDate())}
             </div>
           </div>
           <div className="flex items-baseline gap-4">
@@ -60,11 +66,27 @@ export const PostPreview = ({ post }: PostPreviewProps) => {
               <FontAwesomeIcon icon={faPenClip} fixedWidth /> Last Modified
             </div>
             <div className="text-lg">
-              {dayjs(post.updatedAt).format(DATE_TIME_FORMAT)}
+              {updatedAt.format(DATE_TIME_FORMAT)}
               {updateFlag && '*'}
             </div>
+            <div className="text-sm opacity-70">
+              {timeSince(updatedAt.toDate())}
+            </div>
           </div>
-          <div className="flex items-center gap-2">
+          {post.status === 'PUBLISHED' && (
+            <div className="flex items-baseline gap-4">
+              <div className="text-sm opacity-70">
+                <FontAwesomeIcon icon={faGlobe} fixedWidth /> Published
+              </div>
+              <div className="text-lg">
+                {publishedAt.format(DATE_TIME_FORMAT)}
+              </div>
+              <div className="text-sm opacity-70">
+                {timeSince(publishedAt.toDate())}
+              </div>
+            </div>
+          )}
+          <div className="flex items-center gap-2 pt-2 pb-4">
             <AuthorProfile author={post.author} />
           </div>
           <div className="flex w-full flex-col gap-4 md:w-auto md:flex-row md:gap-2">

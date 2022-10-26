@@ -66,13 +66,13 @@ model Post {
     title           String
     slug            String      @unique
     content         String      @db.Text
-    author          Author?      @relation(fields: [authorId], references: [id])
+    summary         String      @db.Text
+    author          Author?     @relation(fields: [authorId], references: [id])
     authorId        String?
     createdAt       DateTime    @default(now())
     updatedAt       DateTime    @updatedAt
     publishedAt     DateTime?
     status          PostStatus  @default(DRAFT)
-    images          Image[]
 }
 
 enum PostStatus {
@@ -80,16 +80,6 @@ enum PostStatus {
     REVIEW
     PUBLISHED
     ARCHIVED
-}
-
-model Image {
-    id              String      @id @default(cuid())
-    filename        String      @unique
-    alttext         String      
-    post            Post        @relation(fields: [postId], references: [id])
-    postId          String
-    verified        Boolean     @default(false)
-    createdAt       DateTime    @default(now())
 }
 
 model Author {
@@ -105,4 +95,11 @@ model Author {
     createdAt       DateTime    @default(now())
     updatedAt       DateTime    @updatedAt
     posts           Post[]
+}
+
+model Setting {
+    key             String      @id
+    value           String
+    createdAt       DateTime    @default(now())
+    updatedAt       DateTime    @updatedAt
 }

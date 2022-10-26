@@ -8,6 +8,12 @@
   }
 }
 
+@layer {
+  .milkdown .editor.ProseMirror-focused {
+    @apply outline-none;
+  }
+}
+
 ::-webkit-scrollbar {
   @apply w-2;
 }

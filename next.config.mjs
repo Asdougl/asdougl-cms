@@ -15,4 +15,7 @@ function defineNextConfig(config) {
 export default defineNextConfig({
   reactStrictMode: true,
   swcMinify: true,
+  images: {
+    domains: ['asdougl-uploads.s3.ap-southeast-2.amazonaws.com'],
+  },
 })
